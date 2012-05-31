@@ -18,6 +18,7 @@ $cluedo->addPlayer(new Player('franz'));
 
 try {
     $cluedo->deal();
+    echo $cluedo;
 } catch (Exception $exc) {
     echo "ERROR: ".$exc->getMessage();
 }

@@ -54,12 +54,21 @@ class Cluedo {
     }
     
     public function deal() {
-        
         if(count($this->players)<3){
             throw new Exception('Se requiere al menos 3 jugadores');
         }
-        
-        
+    }
+    
+    public function getPlayers(){
+        return $this->players;
+    }
+    
+    public function __toString() {
+        $t = "";
+        foreach($this->getPlayers() as $player){
+            $t .= $player;
+        }
+        return $t;
     }
     
     
