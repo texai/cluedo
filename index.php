@@ -12,10 +12,6 @@ $cluedo->addPlayer(new Player('sergio'));
 $cluedo->addPlayer(new Player('antolin'));
 $cluedo->addPlayer(new Player('franz'));
 
-//var_dump(Cluedo::$suspects);
-//var_dump(Cluedo::$rooms);
-//var_dump(Cluedo::$weapons);
-
 try {
     $cluedo->deal();
     echo $cluedo;
