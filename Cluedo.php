@@ -20,7 +20,7 @@ class Cluedo {
     
     /**
      *
-     * @var Deck
+     * @var Suggestion
      */
     protected $_killer;
     
@@ -29,6 +29,12 @@ class Cluedo {
      * @var Deck
      */
     protected $_poolDeck;
+    
+    /**
+     *
+     * @var Array
+     */
+    public $_startingDecks;
     
     
     /**
@@ -41,10 +47,11 @@ class Cluedo {
     
     public function __construct() {
         $this->_config = new Zend_Config_Ini('config.ini');
-        $this->_killer = new Deck();
+        $this->_killer = new Suggestion($this);
     }
     
     public function addPlayer(Player $p) {
+        $p->setCluedo($this);
         $this->_players[] = $p;
     }
     
@@ -65,6 +72,7 @@ class Cluedo {
             }
             $startingDecks[$type] = $deck;
         }
+        $this->_startingDecks = $startingDecks;
         
         // choosing killer
         foreach ($types as $type) {
@@ -94,6 +102,22 @@ class Cluedo {
     
     public function getPlayers(){
         return $this->_players;
+    }
+    
+    public function getTypes(){
+        return $this->_config->cluedo->types->toArray();
+    }
+    
+    public function getKiller(){
+        return $this->_killer;
+    }
+    
+    /**
+     * 
+     * @return Deck
+     */
+    public function getStartingDeckByType($type){
+        return $this->_startingDecks[$type];
     }
     
     public function __toString() {

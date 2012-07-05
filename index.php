@@ -7,14 +7,21 @@ spl_autoload_register(function ($c) {include_once $c.'.php';});
 
 
 $cluedo = new Cluedo();
-$cluedo->addPlayer(new Player('ernesto'));
+$p = new Player('ernesto');
+$cluedo->addPlayer($p);
 $cluedo->addPlayer(new Player('sergio'));
 $cluedo->addPlayer(new Player('antolin'));
 $cluedo->addPlayer(new Player('franz'));
 
 try {
     $cluedo->deal();
-    echo $cluedo;
+    echo $cluedo->getKiller();
+    echo "------------------------------------------".PHP_EOL;
+    echo $p->play();
+    echo $p->play();
+    echo $p->play();
+    echo $p->play();
+    echo $p->play();
 } catch (Exception $exc) {
     echo "ERROR: ".$exc->getMessage();
 }

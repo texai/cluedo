@@ -10,28 +10,20 @@
  *
  * @author texai
  */
-class Player {
-    
-    
-    public $name;
-    protected $_deck;
-    
-    public function __construct($name) {
-        $this->name = $name;
-        $this->_deck = new Deck();
-    }
-    
-    public function dealCard(Card $card){
-        $this->_deck->addCard($card);
-    }
-    
-    public function __toString() {
-        $t =  "  Player Name: ". $this->name . PHP_EOL;
-        $t .= "  Deck: ". PHP_EOL;
-        $t .= $this->_deck;
-        return $t;
-    }
-    
-}
+class Player extends PlayerAbstract {
 
-?>
+    
+    /**
+     *
+     * @return Suggestion 
+     */
+    public function play() {
+        $s = new Suggestion($this->_cluedo);
+        foreach($this->_cluedo->getTypes() as $type){
+            $typeCards = $this->_cluedo->getStartingDeckByType($type)->getCards();
+            $s->addCard($typeCards[rand(0,count($typeCards)-1)]);
+        }
+        return $s;
+    }
+
+}
