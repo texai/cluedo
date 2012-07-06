@@ -15,12 +15,9 @@ $cluedo->addPlayer(new Player('franz'));
 
 try {
     $cluedo->deal();
-    echo $cluedo->getKiller();
-    echo "------------------------------------------".PHP_EOL;
-    echo $p->play();
-    echo $p->play();
-    echo $p->play();
-    echo $p->play();
+    do{
+        $cluedo->move();
+    } while(!$cluedo->lastMoveWon());
     echo $p->play();
 } catch (Exception $exc) {
     echo "ERROR: ".$exc->getMessage();
