@@ -35,7 +35,7 @@ class Suggestion extends Deck {
     public function __toString() {
         $t = "    ";
         foreach ($this->_cards as $card) {
-            $t .= $card->type .':'. $card->id . ' | ';
+            $t .= substr($card->type,0,1) .':'. $card->id . '|';
         }
         return $t.PHP_EOL;
     }    

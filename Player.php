@@ -23,6 +23,8 @@ class Player extends PlayerAbstract {
             $typeCards = $this->_cluedo->getStartingDeckByType($type)->getCards();
             $s->addCard($typeCards[rand(0,count($typeCards)-1)]);
         }
+        echo "   ".$this->name;
+        echo $s;
         return $s;
     }
 

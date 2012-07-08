@@ -4,21 +4,12 @@ include_once('Zend/Loader/Autoloader.php');
 Zend_Loader_Autoloader::getInstance();
 spl_autoload_register(function ($c) {include_once $c.'.php';});
 
-
-
-$cluedo = new Cluedo();
-$p = new Player('ernesto');
-$cluedo->addPlayer($p);
-$cluedo->addPlayer(new Player('sergio'));
-$cluedo->addPlayer(new Player('antolin'));
-$cluedo->addPlayer(new Player('franz'));
-
 try {
-    $cluedo->deal();
-    do{
-        $cluedo->move();
-    } while(!$cluedo->lastMoveWon());
-    echo $p->play();
+    $cluedo = new Cluedo();
+    while($cluedo->move());
+    echo PHP_EOL.'total moves: '.$cluedo->moves;
+    echo PHP_EOL.'Killer: '.$cluedo->getKiller();
+    
 } catch (Exception $exc) {
     echo "ERROR: ".$exc->getMessage();
 }

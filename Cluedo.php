@@ -36,18 +36,29 @@ class Cluedo {
      */
     public $_startingDecks;
     
-    
     /**
      *
      * @var Array
      */
     protected $_players;
     
+    /**
+     *
+     * @var int
+     */
+    public $moves;
     
+    /**
+     *
+     * @var int
+     */
+    protected $_currentPlayer;
     
     public function __construct() {
         $this->_config = new Zend_Config_Ini('config.ini');
         $this->_killer = new Suggestion($this);
+        $this->_startingDecks = array();
+        $this->_deal();
     }
     
     public function addPlayer(Player $p) {
@@ -55,9 +66,20 @@ class Cluedo {
         $this->_players[] = $p;
     }
     
-    public function deal() {
+    protected function _loadDefaultPlayers(){
+        foreach($this->_config->players->names as $playerName){
+            $this->addPlayer(new Player($playerName));
+        }
+    }
+    
+    protected function _deal() {
+        
+        if(count($this->_players)==0){
+            $this->_loadDefaultPlayers();
+        }
+        
         if(count($this->_players)<3){
-            throw new Exception('Se requiere al menos 3 jugadores');
+            throw new Exception('Three players are required at least');
         }
         
         // ordering each deck by type
@@ -71,8 +93,8 @@ class Cluedo {
                 $totalNCards++;
             }
             $startingDecks[$type] = $deck;
+            $this->_startingDecks[$type] = clone $deck;
         }
-        $this->_startingDecks = $startingDecks;
         
         // choosing killer
         foreach ($types as $type) {
@@ -98,6 +120,8 @@ class Cluedo {
         // choosing poolDeck
         $this->_poolDeck = $remainingDeck;
         
+        // let's play!
+        $this->moves = 0;
     }
     
     public function getPlayers(){
@@ -120,6 +144,23 @@ class Cluedo {
         return $this->_startingDecks[$type];
     }
     
+    public function move() {
+        echo ++$this->moves.': ';
+        if(is_null($this->_currentPlayer)){
+            $this->_currentPlayer = 0;
+        }
+        $s = $this->_players[$this->_currentPlayer]->play();
+        $this->_currentPlayer = ($this->_currentPlayer+1)%count($this->_players);
+        
+        if($this->_config->settings->max_moves <= $this->moves ){
+            return false;
+        }
+        
+        return $s->isEqualsTo($this->_killer);
+    }
+    
+//    public function 
+
     public function __toString() {
         $t = "Players: ".PHP_EOL;
         foreach($this->_players as $player){
